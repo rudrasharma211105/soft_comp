@@ -1,0 +1,16 @@
+fastapi
+uvicorn
+sqlalchemy
+aiomysql
+cryptography
+python-jose[cryptography]
+bcrypt
+passlib
+scikit-fuzzy
+scipy
+numpy
+python-dotenv
+pydantic[email]
+python-multipart
+packaging
+networkx

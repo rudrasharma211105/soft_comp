@@ -50,9 +50,9 @@ app.add_middleware(
 )
 
 # Route Mounting
-app.include_router(auth.router)
-app.include_router(health.router)
-app.include_router(admin.router)
+app.include_router(auth.router, prefix="/api")
+app.include_router(health.router, prefix="/api")
+app.include_router(admin.router, prefix="/api")
 
 @app.on_event("startup")
 async def startup_event():

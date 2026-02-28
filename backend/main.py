@@ -6,7 +6,34 @@ from routes import auth, health, admin
 from database import engine
 from models.domain import Base
 
+import logging
+import traceback
+from fastapi import Request
+from fastapi.responses import JSONResponse
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 app = FastAPI(title="Smart Health Risk Prediction System API", root_path="/api")
+
+@app.middleware("http")
+async def log_requests(request: Request, call_next):
+    logger.info(f"Incoming request: {request.method} {request.url.path}")
+    try:
+        response = await call_next(request)
+        return response
+    except Exception as e:
+        logger.error(f"Error processing request: {e}")
+        logger.error(traceback.format_exc())
+        return JSONResponse(
+            status_code=500,
+            content={"detail": str(e), "traceback": traceback.format_exc()}
+        )
+
+@app.get("/health")
+@app.get("/api/health")
+async def health_check():
+    return {"status": "healthy", "service": "Smart Health API"}
 
 # CORS Configuration
 app.add_middleware(

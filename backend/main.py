@@ -14,11 +14,12 @@ from fastapi.responses import JSONResponse
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-app = FastAPI(title="Smart Health Risk Prediction System API", root_path="/api")
+app = FastAPI(title="Smart Health Risk Prediction System API")
 
 @app.middleware("http")
 async def log_requests(request: Request, call_next):
-    logger.info(f"Incoming request: {request.method} {request.url.path}")
+    # Detailed logging for Vercel troubleshooting
+    logger.info(f"REAL PATH: {request.url.path} | METHOD: {request.method}")
     try:
         response = await call_next(request)
         return response

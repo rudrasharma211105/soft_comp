@@ -2,6 +2,10 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
 from routes import auth, health, admin
 from database import engine
 from models.domain import Base

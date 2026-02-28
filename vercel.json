@@ -1,15 +1,5 @@
 {
     "version": 2,
-    "rewrites": [
-        {
-            "source": "/api/(.*)",
-            "destination": "backend/main.py"
-        },
-        {
-            "source": "/(.*)",
-            "destination": "frontend/index.html"
-        }
-    ],
     "builds": [
         {
             "src": "backend/main.py",
@@ -21,6 +11,19 @@
             "config": {
                 "distDir": "dist"
             }
+        }
+    ],
+    "routes": [
+        {
+            "src": "/api/(.*)",
+            "dest": "backend/main.py"
+        },
+        {
+            "handle": "filesystem"
+        },
+        {
+            "src": "/(.*)",
+            "dest": "frontend/index.html"
         }
     ]
 }

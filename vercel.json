@@ -19,6 +19,14 @@
             "dest": "backend/main.py"
         },
         {
+            "src": "/assets/(.*)",
+            "dest": "frontend/assets/$1"
+        },
+        {
+            "src": "/(.*\\.(js|css|json|png|jpg|svg|ico|webmanifest))$",
+            "dest": "frontend/$1"
+        },
+        {
             "handle": "filesystem"
         },
         {

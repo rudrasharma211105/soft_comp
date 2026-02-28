@@ -51,9 +51,16 @@ app.include_router(admin.router)
 
 @app.on_event("startup")
 async def startup_event():
-    async with engine.begin() as conn:
-        # Create all tables if they don't exist
-        await conn.run_sync(Base.metadata.create_all)
+    try:
+        logger.info("Attempting database initialization...")
+        async with engine.begin() as conn:
+            # Create all tables if they don't exist
+            await conn.run_sync(Base.metadata.create_all)
+        logger.info("Database initialized successfully.")
+    except Exception as e:
+        logger.error(f"DATABASE INITIALIZATION FAILED: {e}")
+        logger.error(traceback.format_exc())
+        # We don't reraise so the app can still serve the /health page to report the error
 
 @app.get("/")
 async def root():

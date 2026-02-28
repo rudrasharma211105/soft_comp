@@ -3,14 +3,14 @@ uvicorn
 sqlalchemy
 aiomysql
 cryptography
-python-jose[cryptography]
+python-jose
 bcrypt
 passlib
 scikit-fuzzy
 scipy
 numpy
 python-dotenv
-pydantic[email]
+pydantic
 python-multipart
 packaging
 networkx

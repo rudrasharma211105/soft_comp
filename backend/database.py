@@ -11,6 +11,8 @@ MYSQL_URL = os.getenv("MYSQL_URL", "mysql+aiomysql://root:@localhost/smart_healt
 if MYSQL_URL.startswith("mysql://"):
     MYSQL_URL = MYSQL_URL.replace("mysql://", "mysql+aiomysql://", 1)
 
+from sqlalchemy.pool import NullPool
+
 # Configure SSL for remote databases (like Aiven)
 connect_args = {}
 if "localhost" not in MYSQL_URL and "127.0.0.1" not in MYSQL_URL:
@@ -20,7 +22,8 @@ if "localhost" not in MYSQL_URL and "127.0.0.1" not in MYSQL_URL:
 engine = create_async_engine(
     MYSQL_URL, 
     echo=False,
-    connect_args=connect_args
+    connect_args=connect_args,
+    poolclass=NullPool
 )
 AsyncSessionLocal = async_sessionmaker(
     bind=engine, class_=AsyncSession, expire_on_commit=False

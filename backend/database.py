@@ -11,6 +11,10 @@ MYSQL_URL = os.getenv("MYSQL_URL", "mysql+aiomysql://root:@localhost/smart_healt
 if MYSQL_URL.startswith("mysql://"):
     MYSQL_URL = MYSQL_URL.replace("mysql://", "mysql+aiomysql://", 1)
 
+# Remove ?ssl-mode=REQUIRED or any other URL parameters as aiomysql doesn't support them natively
+if "?" in MYSQL_URL:
+    MYSQL_URL = MYSQL_URL.split("?")[0]
+
 from sqlalchemy.pool import NullPool
 
 # Configure SSL for remote databases (like Aiven)

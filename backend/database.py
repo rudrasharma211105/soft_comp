@@ -15,13 +15,18 @@ if MYSQL_URL.startswith("mysql://"):
 if "?" in MYSQL_URL:
     MYSQL_URL = MYSQL_URL.split("?")[0]
 
+import ssl
 from sqlalchemy.pool import NullPool
 
 # Configure SSL for remote databases (like Aiven)
 connect_args = {}
 if "localhost" not in MYSQL_URL and "127.0.0.1" not in MYSQL_URL:
-    # Aiven requires SSL; this enables it for the aiomysql driver
-    connect_args = {"ssl": True}
+    # Set up SSL context specifically for aiomysql
+    ssl_context = ssl.create_default_context()
+    # Bypass strict Vercel CA cert checking which sometimes causes handshake drops
+    ssl_context.check_hostname = False
+    ssl_context.verify_mode = ssl.CERT_NONE
+    connect_args = {"ssl": ssl_context}
 
 engine = create_async_engine(
     MYSQL_URL, 

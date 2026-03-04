@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { useNavigate, Link } from 'react-router-dom';
 import { authService } from '../services/api';
 import { HeartPulse } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 const RegisterPage = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
@@ -15,6 +16,7 @@ const RegisterPage = () => {
         setIsSubmitting(true);
         try {
             await authService.register(data);
+            toast.success('Registration successful! Please log in.');
             navigate('/login');
         } catch (err) {
             console.error('Registration Error:', err);

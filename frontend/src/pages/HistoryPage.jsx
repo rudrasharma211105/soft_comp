@@ -22,7 +22,7 @@ const HistoryPage = () => {
     const navigate = useNavigate();
     const [history, setHistory] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [isSidebarOpen, setSidebarOpen] = useState(true);
+    const [isSidebarOpen, setSidebarOpen] = useState(window.innerWidth >= 768);
     const [selectedRecord, setSelectedRecord] = useState(null);
 
     useEffect(() => {
@@ -65,8 +65,15 @@ const HistoryPage = () => {
 
     return (
         <div className="min-h-screen bg-gray-50 flex">
+            {/* Mobile Overlay */}
+            {isSidebarOpen && (
+                <div
+                    className="fixed inset-0 bg-black/50 z-40 md:hidden"
+                    onClick={() => setSidebarOpen(false)}
+                />
+            )}
             {/* Sidebar - Reusing same sidebar logic for consistency */}
-            <div className={`${isSidebarOpen ? 'w-64' : 'w-20'} bg-blue-900 text-white transition-all duration-300 ease-in-out flex flex-col`}>
+            <div className={`fixed inset-y-0 left-0 z-50 md:relative ${isSidebarOpen ? 'translate-x-0 w-64' : '-translate-x-full md:translate-x-0 md:w-20'} bg-blue-900 text-white transition-all duration-300 ease-in-out flex flex-col`}>
                 <div className="p-6 flex items-center justify-between">
                     {isSidebarOpen && (
                         <div className="flex items-center space-x-2">
@@ -116,8 +123,14 @@ const HistoryPage = () => {
             </div>
 
             {/* Main Content */}
-            <div className="flex-1 flex flex-col">
-                <header className="bg-white shadow-sm p-4">
+            <div className="flex-1 flex flex-col w-full md:w-auto overflow-x-hidden">
+                <header className="bg-white shadow-sm p-4 flex items-center gap-4">
+                    <button
+                        className="md:hidden p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100"
+                        onClick={() => setSidebarOpen(true)}
+                    >
+                        <Menu size={24} />
+                    </button>
                     <h1 className="text-xl font-semibold text-gray-800">Prediction History</h1>
                 </header>
 
@@ -140,7 +153,7 @@ const HistoryPage = () => {
                                 </button>
                             </div>
                         ) : (
-                            <div className="bg-white shadow rounded-xl overflow-hidden border border-gray-100">
+                            <div className="bg-white shadow rounded-xl border border-gray-100 overflow-x-auto">
                                 <table className="min-w-full divide-y divide-gray-200">
                                     <thead className="bg-gray-50">
                                         <tr>
